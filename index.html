@@ -555,16 +555,12 @@ html[lang="fa"] .intro-heading{ margin-right:auto; margin-left:0; }
 /* =============== ENGLISH (LTR) OVERRIDES =============== */
 html[lang="en"] body{ font-family:'Space Grotesk','Segoe UI',Tahoma,Arial,sans-serif; direction:ltr; }
 html[lang="en"] .cover-sub{ direction:ltr; text-align:left; line-height:1.8; }
-html[lang="en"] #cover, html[lang="en"] #contact{ justify-content:flex-end; }
 html[lang="en"] .modal-close{ left:auto; right:16px; }
 html[lang="en"] .timeline-bars{ flex-direction:row-reverse; }
 html[lang="en"] .intro-block p, html[lang="en"] .cap-copy p, html[lang="en"] .products-lead-sub{ line-height:1.85; }
 html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85; }
 
 
-/* =============== PROGRESSIVE IMAGES (light -> full quality) =============== */
-html img[data-full]{ transition: transform .5s ease, filter .6s ease, scale .6s ease; }
-html img[data-full].pl-low{ filter: blur(8px); scale: 1.06; }
 </style>
 </head>
 <body>
@@ -773,7 +769,7 @@ html img[data-full].pl-low{ filter: blur(8px); scale: 1.06; }
 /* ================= PROGRESSIVE IMAGES =================
    1) the light "-optimized.webp" shows immediately
    2) once the page (and every light image) has loaded, the full .png is downloaded in the background
-   3) when it is fully decoded it replaces the light one (no flicker) */
+   3) when it is fully decoded it silently replaces the light one (no effect, no flicker) */
 const PL = (() => {
   const low = (src) => src.replace(/\.png$/i, '-optimized.webp');
   const pageLoaded = new Promise(r => {
@@ -804,11 +800,9 @@ const PL = (() => {
   /* <img data-full="..."> whose src is already the light version */
   function img(el){
     const full = el.dataset.full;
-    el.classList.add('pl-low');
-    const done = () => el.classList.remove('pl-low');
-    const fail = () => { el.src = full; done(); };       // light version missing -> use full directly
+    const fail = () => { el.src = full; };               // light version missing -> use full directly
     const upgrade = () => pageLoaded.then(() => enqueue(() =>
-      fetchFull(full).then(ok => { if(ok) el.src = full; done(); }), el));
+      fetchFull(full).then(ok => { if(ok) el.src = full; }), el));
     if(el.complete){ el.naturalWidth ? upgrade() : fail(); }
     else{
       el.addEventListener('load', upgrade, {once:true});
