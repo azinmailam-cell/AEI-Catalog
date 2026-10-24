@@ -1,23 +1,10 @@
-<!--
-  Bilingual catalog (Persian default / English).
-  Use the FA | EN switch at the top-right corner. The chosen language is remembered in the browser,
-  and you can also open the page directly in English with  ?lang=en  at the end of the address.
-
-  Image guide:
-  All images are referenced from the "media" folder next to this HTML file
-  (media/Logo.png, media/Picture1.png ... media/Picture19.png).
-  Keep that folder beside this file, or replace the paths with your own image URLs.
-  Fonts are embedded in the file - no changes needed.
-
-  To edit any text, search for its key in the I18N object inside the script
-  (fa = Persian, en = English).
--->
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+<link rel="preload" as="image" href="media/Picture1-optimized.webp" fetchpriority="high">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>آذین الکترو ایده | کاتالوگ شرکت</title>
+<title>آذین الکترو ایده | کاتالوگ</title>
 <style>
 
 @font-face{
@@ -574,6 +561,10 @@ html[lang="en"] .timeline-bars{ flex-direction:row-reverse; }
 html[lang="en"] .intro-block p, html[lang="en"] .cap-copy p, html[lang="en"] .products-lead-sub{ line-height:1.85; }
 html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85; }
 
+
+/* =============== PROGRESSIVE IMAGES (light -> full quality) =============== */
+html img[data-full]{ transition: transform .5s ease, filter .6s ease, scale .6s ease; }
+html img[data-full].pl-low{ filter: blur(8px); scale: 1.06; }
 </style>
 </head>
 <body>
@@ -597,7 +588,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 
 <!-- ================= COVER ================= -->
 <section id="cover">
-  <div class="cover-bg" style="background-image:url('media/Picture1.png');"></div>
+  <div class="cover-bg" data-full="media/Picture1.png" style="background-image:url('media/Picture1-optimized.webp');"></div>
   <div class="cover-scrim"></div>
   <div class="cover-content">
     <div class="cover-logo-row">
@@ -617,7 +608,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 <!-- ================= INTRO ================= -->
 <section id="intro">
   <div class="intro-grid">
-    <div class="intro-photo scan-wrap" style="background-image:url('media/Picture2.png');">
+    <div class="intro-photo scan-wrap" data-full="media/Picture2.png" style="background-image:url('media/Picture2-optimized.webp');">
       <div class="scan-line"></div>
       <div class="intro-photo-caption en">TEHRAN &middot; PRODUCTION CAMPUS</div>
     </div>
@@ -666,7 +657,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reveal" style="margin-bottom:90px;">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture5.png" alt="نوآوری و دانش فنی" data-i18n-alt="alt_c1"><div class="scan-line"></div></div><span class="tag en">R&amp;D</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture5-optimized.webp" data-full="media/Picture5.png" alt="نوآوری و دانش فنی" data-i18n-alt="alt_c1"><div class="scan-line"></div></div><span class="tag en">R&amp;D</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c1">واحد تحقیق و توسعه</h3>
         <p data-i18n="p_c1a">شرکت دانش‌بنیان آذین الکترو ایده با بهره‌گیری ایده از دانش فنی روز دنیا، تیمی متخصص و زیرساخت‌های پیشرفته، قادر به طراحی، توسعه و تولید طیف گسترده‌ای از محصولات الکترونیکی خودرویی در بالاترین استانداردهای کیفی می‌باشد. ما در تمام مراحل، از تحقیق و توسعه تا تولید انبوه و پشتیبانی پس از فروش، متعهد به ارائه راهکارهای نوآورانه، قابل اعتماد و به‌صرفه به مشتریان خود در صنعت خودرویی و غیره خودرویی هستیم.</p>
@@ -675,7 +666,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reverse reveal" style="margin-bottom:90px;">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture6.png" alt="طراحی و ساخت خط تولید" data-i18n-alt="alt_c2"><div class="scan-line"></div></div><span class="tag en">Production Lines</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture6-optimized.webp" data-full="media/Picture6.png" alt="طراحی و ساخت خط تولید" data-i18n-alt="alt_c2"><div class="scan-line"></div></div><span class="tag en">Production Lines</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c2">طراحی و ساخت تجهیزات خط تولید</h3>
         <p data-i18n="p_c2">آذین الکترو ایده با بهره‌گیری از دانش فنی و توان مهندسی خود، در زمینه طراحی و ساخت تجهیزات خطوط تولید فعالیت می‌کند و با ارائه راهکارهای مهندسی متناسب با فرآیندهای تولید، نسبت به طراحی، ساخت و اجرای تجهیزات مورد نیاز خطوط تولید در صنایع مختلف اقدام می‌نماید.</p>
@@ -683,7 +674,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reveal" style="margin-bottom:90px;">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture7.png" alt="سالن Cleanroom" data-i18n-alt="alt_c3"><div class="scan-line"></div></div><span class="tag en">Cleanroom</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture7-optimized.webp" data-full="media/Picture7.png" alt="سالن Cleanroom" data-i18n-alt="alt_c3"><div class="scan-line"></div></div><span class="tag en">Cleanroom</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c3">سالن Cleanroom</h3>
         <p data-i18n="p_c3">این شرکت با بهره‌گیری از دستگاه‌های پیشرفته در سالن Cleanroom توانایی بالایی در مونتاژ انواع بردهای الکترونیکی را دارد.</p>
@@ -691,7 +682,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reverse reveal" style="margin-bottom:90px;">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture8.png" alt="طراحی و ساخت انواع تسترها" data-i18n-alt="alt_c4"><div class="scan-line"></div></div><span class="tag en">Custom Fixtures</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture8-optimized.webp" data-full="media/Picture8.png" alt="طراحی و ساخت انواع تسترها" data-i18n-alt="alt_c4"><div class="scan-line"></div></div><span class="tag en">Custom Fixtures</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c4">طراحی و ساخت انواع تسترها</h3>
         <p data-i18n="p_c4">شرکت آذین الکترو ایده، با تکیه بر دانش فنی و تیم مهندسی مجرب، در زمینه طراحی و ساخت انواع تجهیزات خطوط تولید، از جمله فیکسچرها، میزهای کاری و کانوایرها فعالیت نموده و این تجهیزات را برای نیاز خود و همچنین سایر شرکت‌ها به‌صورت سفارشی طراحی و تولید می‌نماید.</p>
@@ -699,7 +690,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reveal">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture9.png" alt="تست انواع موتورهای خودرو" data-i18n-alt="alt_c5"><div class="scan-line"></div></div><span class="tag en">Engine Test Cell</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture9-optimized.webp" data-full="media/Picture9.png" alt="تست انواع موتورهای خودرو" data-i18n-alt="alt_c5"><div class="scan-line"></div></div><span class="tag en">Engine Test Cell</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c5">تست انواع موتورهای خودرو</h3>
         <p data-i18n="p_c5">شرکت آذین الکترو ایده، با برخورداری از اتاق تست پیشرفته موتور، امکان انجام تست انواع موتورهای احتراقی را فراهم کرده است. این اتاق تست مجهز به شاسی دینامومتر برای اندازه‌گیری توان و گشتاور موتور و ثبت داده‌های عملکردی به‌صورت لحظه‌ای می‌باشد.</p>
@@ -710,7 +701,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 
 <!-- ================= PRODUCTS INTRO ================= -->
 <section id="products-intro">
-  <div class="cover-bg" style="background-image:url('media/Picture3.png'); filter:brightness(0.28) saturate(1.1);"></div>
+  <div class="cover-bg" data-full="media/Picture3.png" style="background-image:url('media/Picture3-optimized.webp'); filter:brightness(0.28) saturate(1.1);"></div>
   <div class="section-inner reveal">
     <span class="eyebrow-badge">&#128722; <span data-i18n="badge_products">سبد محصولات</span></span>
     <h2 class="products-lead-title" data-i18n="h_products">مجموعه <span class="accent">قطعات الکترونیک خودرو</span></h2>
@@ -727,7 +718,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 <section id="awards">
   <div class="section-inner">
     <div class="awards-layout">
-      <div class="awards-media tilt reveal"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture10.png" alt="دستاوردها و تندیس‌ها" data-i18n-alt="alt_awards"><div class="scan-line"></div></div></div>
+      <div class="awards-media tilt reveal"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture10-optimized.webp" data-full="media/Picture10.png" alt="دستاوردها و تندیس‌ها" data-i18n-alt="alt_awards"><div class="scan-line"></div></div></div>
       <div class="awards-copy reveal">
         <span class="eyebrow-badge">&#127942; <span data-i18n="badge_awards">دستاوردها</span></span>
         <p data-i18n="p_awards">دریافت تندیس «نشان عالی مدیر سال» در سال ۱۴۰۴ و همچنین دریافت تندیس «منتخب صنعتگر نمونه» در همایش سالانه صنعت، معدن و تجارت ایران برای چهار سال متوالی. همچنین دریافت تندیس جشنواره ملی منتخب «تولیدکنندگان و مدیران جوان» صنعت، معدن و تجارت ایران برای چهار سال متوالی.</p>
@@ -742,7 +733,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 
 <!-- ================= CONTACT ================= -->
 <section id="contact">
-  <div class="contact-bg" style="background-image:url('media/Picture19.png');"></div>
+  <div class="contact-bg" data-full="media/Picture19.png" style="background-image:url('media/Picture19-optimized.webp');"></div>
   <div class="contact-scrim"></div>
   <div class="contact-inner">
     <div class="contact-logo">
@@ -778,6 +769,71 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 </div>
 
 <script>
+
+/* ================= PROGRESSIVE IMAGES =================
+   1) the light "-optimized.webp" shows immediately
+   2) once the page (and every light image) has loaded, the full .png is downloaded in the background
+   3) when it is fully decoded it replaces the light one (no flicker) */
+const PL = (() => {
+  const low = (src) => src.replace(/\.png$/i, '-optimized.webp');
+  const pageLoaded = new Promise(r => {
+    if(document.readyState === 'complete') r(); else window.addEventListener('load', r, {once:true});
+  });
+  const MAX = 3;                       // parallel full-quality downloads
+  const hi = [], lo = []; let active = 0;
+  const pump = () => {
+    while(active < MAX && (hi.length || lo.length)){
+      const job = hi.length ? hi.shift() : lo.shift();
+      active++;
+      job().then(() => { active--; pump(); });
+    }
+  };
+  const enqueue = (job, el) => {
+    const r = el.getBoundingClientRect();
+    (r.top < window.innerHeight * 1.5 && r.bottom > -200 ? hi : lo).push(job);
+    pump();
+  };
+  const fetchFull = (url) => new Promise(res => {
+    const im = new Image();
+    im.decoding = 'async';
+    im.onload = () => (im.decode ? im.decode() : Promise.resolve()).catch(() => {}).then(() => res(true));
+    im.onerror = () => res(false);
+    im.src = url;
+  });
+
+  /* <img data-full="..."> whose src is already the light version */
+  function img(el){
+    const full = el.dataset.full;
+    el.classList.add('pl-low');
+    const done = () => el.classList.remove('pl-low');
+    const fail = () => { el.src = full; done(); };       // light version missing -> use full directly
+    const upgrade = () => pageLoaded.then(() => enqueue(() =>
+      fetchFull(full).then(ok => { if(ok) el.src = full; done(); }), el));
+    if(el.complete){ el.naturalWidth ? upgrade() : fail(); }
+    else{
+      el.addEventListener('load', upgrade, {once:true});
+      el.addEventListener('error', fail, {once:true});
+    }
+  }
+
+  /* any element that uses a CSS background-image */
+  function bg(el, full, now){
+    const light = low(full);
+    el.dataset.bgFor = full;
+    el.style.backgroundImage = `url('${light}')`;
+    const probe = new Image();                           // light version missing -> use full directly
+    probe.onerror = () => { if(el.dataset.bgFor === full) el.style.backgroundImage = `url('${full}')`; };
+    probe.src = light;
+    const run = () => fetchFull(full).then(ok => {
+      if(ok && el.dataset.bgFor === full) el.style.backgroundImage = `url('${full}')`;
+    });
+    if(now) run(); else pageLoaded.then(() => enqueue(run, el));
+  }
+
+  return { low, img, bg };
+})();
+document.querySelectorAll('img[data-full]').forEach(PL.img);
+document.querySelectorAll('[data-full]:not(img)').forEach(el => PL.bg(el, el.dataset.full));
 /* ================= LANGUAGE (FA default / EN) ================= */
 const I18N = {
  "fa": {
@@ -1048,7 +1104,7 @@ PRODUCTS.forEach((p, i) => {
   card.className = 'pcard tilt reveal';
   card.innerHTML = `
     <div class="pcard-photo scan-wrap">
-      <img src="${p.img}" alt="" loading="lazy">
+      <img src="${PL.low(p.img)}" data-full="${p.img}" alt="" loading="lazy">
       <div class="scan-line"></div>
       <span class="pcard-code en">${p.code}</span>
     </div>
@@ -1060,6 +1116,7 @@ PRODUCTS.forEach((p, i) => {
       <div class="pcard-expand-hint"></div>
     </div>
   `;
+  PL.img(card.querySelector('.pcard-photo img'));
   card.addEventListener('click', () => openModal(p));
   gallery.appendChild(card);
   p._card = card;
@@ -1074,7 +1131,7 @@ function fillModal(p){
 function openModal(p){
   currentProduct = p;
   const mi = document.getElementById('modalImg');
-  mi.style.backgroundImage = `url('${p.img}')`;
+  PL.bg(mi, p.img, true);
   mi.style.backgroundSize = 'cover';
   mi.style.backgroundPosition = 'center';
   fillModal(p);
