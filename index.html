@@ -4,7 +4,7 @@
 <link rel="preload" as="image" href="media/Picture1-optimized.webp" fetchpriority="high">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>آذین الکترو ایده | کاتالوگ</title>
+<title>AEI Catalog</title>
 <style>
 
 @font-face{
@@ -72,15 +72,23 @@ body{
 
 /* ---------- Nav dots ---------- */
 .navdots{
-  position:fixed; top:50%; left:22px; transform:translateY(-50%);
-  z-index:500; display:flex; flex-direction:column; gap:14px;
+  position:fixed; top:50%; left:15px; transform:translateY(-50%);
+  z-index:500; display:flex; flex-direction:column;
 }
 .navdots button{
-  width:9px; height:9px; border-radius:50%;
-  border:1.5px solid var(--gold); background:transparent;
-  cursor:pointer; padding:0; transition: all .3s ease;
+  width:24px; height:24px; display:grid; place-items:center;
+  border:0; border-radius:50%; background:transparent;
+  cursor:pointer; padding:0;
 }
-.navdots button.active{ background: var(--gold); width:11px; height:11px; }
+.navdots button::before{
+  content:""; width:9px; height:9px; box-sizing:border-box;
+  border:1.5px solid var(--gold); border-radius:50%;
+  box-shadow:0 0 0 1px rgba(11,11,12,.7);
+  transition:background-color .3s ease, transform .3s ease;
+}
+.navdots button.active::before{
+  background:var(--gold); transform:scale(1.22);
+}
 @media (max-width: 860px){ .navdots{ display:none; } }
 
 /* ---------- Sections generic ---------- */
@@ -534,32 +542,54 @@ a:focus-visible, button:focus-visible{ outline:2px solid var(--gold); outline-of
 
 /* =============== LANGUAGE SWITCH =============== */
 .lang-switch{
-  position:fixed; top:18px; right:22px; z-index:600; display:flex; direction:ltr;
+  position:fixed; top:18px; right:22px; z-index:600; direction:ltr;
   background:rgba(10,10,12,.72); border:1px solid var(--gold-line);
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
+.lang-options{ display:flex; }
 .lang-switch button{
   background:transparent; border:0; color:var(--grey-text); cursor:pointer;
   padding:7px 14px; font-size:.82rem; letter-spacing:.5px; transition: background .2s, color .2s;
 }
 .lang-switch button[data-lang="fa"]{ font-family:'Vazirmatn','Segoe UI',Tahoma,Arial,sans-serif; }
 .lang-switch button[data-lang="en"]{ font-family:'Space Grotesk','Segoe UI',Arial,sans-serif; font-weight:700; }
+.lang-switch button[data-lang="zh"]{ font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','WenQuanYi Micro Hei',sans-serif; letter-spacing:1px; }
 .lang-switch button:hover{ color:var(--off-white); }
 .lang-switch button.active{ background:var(--gold); color:#111; font-weight:700; }
 .lang-switch button:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
-@media (max-width: 560px){ .lang-switch{ top:12px; right:12px; } .lang-switch button{ padding:6px 11px; } }
+
+/* compact toggle (only visible on phones) */
+.lang-switch .lang-toggle{ display:none; }
+@media (max-width: 700px){
+  .lang-switch{ top:10px; right:10px; }
+  .lang-switch .lang-toggle{ display:flex; align-items:center; gap:6px; padding:6px 9px; color:var(--off-white); }
+  .lang-toggle svg{ flex:none; color:var(--gold); }
+  .lang-toggle .lang-current{ font-size:.75rem; font-weight:700; line-height:1; }
+  .lang-toggle .lang-caret{ font-size:.62rem; line-height:1; color:var(--gold); transition:transform .2s; }
+  .lang-switch.open .lang-caret{ transform:rotate(180deg); }
+  .lang-options{
+    display:none; position:absolute; top:calc(100% + 6px); right:-1px; min-width:calc(100% + 2px);
+    flex-direction:column; background:rgba(10,10,12,.94); border:1px solid var(--gold-line);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .lang-switch.open .lang-options{ display:flex; }
+  .lang-switch .lang-options button{ text-align:left; white-space:nowrap; padding:10px 16px; font-size:.85rem; }
+}
 
 /* =============== PERSIAN-ONLY TWEAKS =============== */
 html[lang="fa"] .intro-heading{ margin-right:auto; margin-left:0; }
 
-/* =============== ENGLISH (LTR) OVERRIDES =============== */
+/* =============== LTR OVERRIDES (ENGLISH + CHINESE) =============== */
 html[lang="en"] body{ font-family:'Space Grotesk','Segoe UI',Tahoma,Arial,sans-serif; direction:ltr; }
-html[lang="en"] .cover-sub{ direction:ltr; text-align:left; line-height:1.8; }
-html[lang="en"] .modal-close{ left:auto; right:16px; }
-html[lang="en"] .timeline-bars{ flex-direction:row-reverse; }
-html[lang="en"] .intro-block p, html[lang="en"] .cap-copy p, html[lang="en"] .products-lead-sub{ line-height:1.85; }
-html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85; }
-
+html[lang^="zh"] body{ font-family:'Space Grotesk','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','WenQuanYi Micro Hei',sans-serif; direction:ltr; }
+html[lang="en"] .cover-sub, html[lang^="zh"] .cover-sub{ direction:ltr; text-align:left; line-height:1.8; }
+html[lang="en"] .modal-close, html[lang^="zh"] .modal-close{ left:auto; right:16px; }
+html[lang="en"] .timeline-bars, html[lang^="zh"] .timeline-bars{ flex-direction:row-reverse; }
+html[lang="en"] .intro-block p, html[lang="en"] .cap-copy p, html[lang="en"] .products-lead-sub,
+html[lang^="zh"] .intro-block p, html[lang^="zh"] .cap-copy p, html[lang^="zh"] .products-lead-sub{ line-height:1.85; }
+html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p,
+html[lang^="zh"] .modal-info p, html[lang^="zh"] .awards-copy p{ line-height:1.85; }
+html[lang^="zh"] .cover-sub{ line-height:1.9; }
 
 </style>
 </head>
@@ -568,12 +598,20 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 <div id="cursor-glow"></div>
 
 <div class="lang-switch" id="langSwitch" role="group" aria-label="انتخاب زبان" data-ui-aria="lang_aria">
-  <button type="button" data-lang="fa" lang="fa">فارسی</button>
-  <button type="button" data-lang="en" lang="en">EN</button>
+  <button type="button" class="lang-toggle" id="langToggle" data-lang="fa" lang="fa" aria-haspopup="true" aria-expanded="false" aria-controls="langOptions">
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
+    <span class="lang-current" id="langCurrent">فارسی</span>
+    <span class="lang-caret" aria-hidden="true">&#9662;</span>
+  </button>
+  <div class="lang-options" id="langOptions">
+    <button type="button" data-lang="fa" lang="fa">فارسی</button>
+    <button type="button" data-lang="en" lang="en">EN</button>
+    <button type="button" data-lang="zh" lang="zh-CN">中文</button>
+  </div>
 </div>
 
 <nav class="navdots" id="navdots">
-  <button data-target="cover" class="active" aria-label="کاور" data-i18n-aria="nav_cover"></button>
+  <button data-target="cover" class="active" aria-current="true" aria-label="کاور" data-i18n-aria="nav_cover"></button>
   <button data-target="intro" aria-label="معرفی" data-i18n-aria="nav_intro"></button>
   <button data-target="cap1" aria-label="توانمندی‌ها" data-i18n-aria="nav_cap"></button>
   <button data-target="products-intro" aria-label="محصولات" data-i18n-aria="nav_prod"></button>
@@ -653,7 +691,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reveal" style="margin-bottom:90px;">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture5-optimized.webp" data-full="media/Picture5.png" alt="نوآوری و دانش فنی" data-i18n-alt="alt_c1"><div class="scan-line"></div></div><span class="tag en">R&amp;D</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture5-optimized.webp" data-full="media/Picture5.png" loading="lazy" decoding="async" alt="نوآوری و دانش فنی" data-i18n-alt="alt_c1"><div class="scan-line"></div></div><span class="tag en">R&amp;D</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c1">واحد تحقیق و توسعه</h3>
         <p data-i18n="p_c1a">شرکت دانش‌بنیان آذین الکترو ایده با بهره‌گیری ایده از دانش فنی روز دنیا، تیمی متخصص و زیرساخت‌های پیشرفته، قادر به طراحی، توسعه و تولید طیف گسترده‌ای از محصولات الکترونیکی خودرویی در بالاترین استانداردهای کیفی می‌باشد. ما در تمام مراحل، از تحقیق و توسعه تا تولید انبوه و پشتیبانی پس از فروش، متعهد به ارائه راهکارهای نوآورانه، قابل اعتماد و به‌صرفه به مشتریان خود در صنعت خودرویی و غیره خودرویی هستیم.</p>
@@ -662,7 +700,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reverse reveal" style="margin-bottom:90px;">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture6-optimized.webp" data-full="media/Picture6.png" alt="طراحی و ساخت خط تولید" data-i18n-alt="alt_c2"><div class="scan-line"></div></div><span class="tag en">Production Lines</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture6-optimized.webp" data-full="media/Picture6.png" loading="lazy" decoding="async" alt="طراحی و ساخت خط تولید" data-i18n-alt="alt_c2"><div class="scan-line"></div></div><span class="tag en">Production Lines</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c2">طراحی و ساخت تجهیزات خط تولید</h3>
         <p data-i18n="p_c2">آذین الکترو ایده با بهره‌گیری از دانش فنی و توان مهندسی خود، در زمینه طراحی و ساخت تجهیزات خطوط تولید فعالیت می‌کند و با ارائه راهکارهای مهندسی متناسب با فرآیندهای تولید، نسبت به طراحی، ساخت و اجرای تجهیزات مورد نیاز خطوط تولید در صنایع مختلف اقدام می‌نماید.</p>
@@ -670,7 +708,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reveal" style="margin-bottom:90px;">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture7-optimized.webp" data-full="media/Picture7.png" alt="سالن Cleanroom" data-i18n-alt="alt_c3"><div class="scan-line"></div></div><span class="tag en">Cleanroom</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture7-optimized.webp" data-full="media/Picture7.png" loading="lazy" decoding="async" alt="سالن Cleanroom" data-i18n-alt="alt_c3"><div class="scan-line"></div></div><span class="tag en">Cleanroom</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c3">سالن Cleanroom</h3>
         <p data-i18n="p_c3">این شرکت با بهره‌گیری از دستگاه‌های پیشرفته در سالن Cleanroom توانایی بالایی در مونتاژ انواع بردهای الکترونیکی را دارد.</p>
@@ -678,7 +716,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reverse reveal" style="margin-bottom:90px;">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture8-optimized.webp" data-full="media/Picture8.png" alt="طراحی و ساخت انواع تسترها" data-i18n-alt="alt_c4"><div class="scan-line"></div></div><span class="tag en">Custom Fixtures</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture8-optimized.webp" data-full="media/Picture8.png" loading="lazy" decoding="async" alt="طراحی و ساخت انواع تسترها" data-i18n-alt="alt_c4"><div class="scan-line"></div></div><span class="tag en">Custom Fixtures</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c4">طراحی و ساخت انواع تسترها</h3>
         <p data-i18n="p_c4">شرکت آذین الکترو ایده، با تکیه بر دانش فنی و تیم مهندسی مجرب، در زمینه طراحی و ساخت انواع تجهیزات خطوط تولید، از جمله فیکسچرها، میزهای کاری و کانوایرها فعالیت نموده و این تجهیزات را برای نیاز خود و همچنین سایر شرکت‌ها به‌صورت سفارشی طراحی و تولید می‌نماید.</p>
@@ -686,7 +724,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
     </div>
 
     <div class="cap-layout reveal">
-      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture9-optimized.webp" data-full="media/Picture9.png" alt="تست انواع موتورهای خودرو" data-i18n-alt="alt_c5"><div class="scan-line"></div></div><span class="tag en">Engine Test Cell</span></div>
+      <div class="cap-media tilt"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture9-optimized.webp" data-full="media/Picture9.png" loading="lazy" decoding="async" alt="تست انواع موتورهای خودرو" data-i18n-alt="alt_c5"><div class="scan-line"></div></div><span class="tag en">Engine Test Cell</span></div>
       <div class="cap-copy">
         <h3 data-i18n="h_c5">تست انواع موتورهای خودرو</h3>
         <p data-i18n="p_c5">شرکت آذین الکترو ایده، با برخورداری از اتاق تست پیشرفته موتور، امکان انجام تست انواع موتورهای احتراقی را فراهم کرده است. این اتاق تست مجهز به شاسی دینامومتر برای اندازه‌گیری توان و گشتاور موتور و ثبت داده‌های عملکردی به‌صورت لحظه‌ای می‌باشد.</p>
@@ -714,7 +752,7 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 <section id="awards">
   <div class="section-inner">
     <div class="awards-layout">
-      <div class="awards-media tilt reveal"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture10-optimized.webp" data-full="media/Picture10.png" alt="دستاوردها و تندیس‌ها" data-i18n-alt="alt_awards"><div class="scan-line"></div></div></div>
+      <div class="awards-media tilt reveal"><div class="scan-wrap" style="width:100%;height:100%;"><img src="media/Picture10-optimized.webp" data-full="media/Picture10.png" loading="lazy" decoding="async" alt="دستاوردها و تندیس‌ها" data-i18n-alt="alt_awards"><div class="scan-line"></div></div></div>
       <div class="awards-copy reveal">
         <span class="eyebrow-badge">&#127942; <span data-i18n="badge_awards">دستاوردها</span></span>
         <p data-i18n="p_awards">دریافت تندیس «نشان عالی مدیر سال» در سال ۱۴۰۴ و همچنین دریافت تندیس «منتخب صنعتگر نمونه» در همایش سالانه صنعت، معدن و تجارت ایران برای چهار سال متوالی. همچنین دریافت تندیس جشنواره ملی منتخب «تولیدکنندگان و مدیران جوان» صنعت، معدن و تجارت ایران برای چهار سال متوالی.</p>
@@ -767,67 +805,74 @@ html[lang="en"] .modal-info p, html[lang="en"] .awards-copy p{ line-height:1.85;
 <script>
 
 /* ================= PROGRESSIVE IMAGES =================
-   1) the light "-optimized.webp" shows immediately
-   2) once the page (and every light image) has loaded, the full .png is downloaded in the background
-   3) when it is fully decoded it silently replaces the light one (no effect, no flicker) */
+   Show the WebP first. Upgrade visible images once the preview has painted. */
 const PL = (() => {
   const low = (src) => src.replace(/\.png$/i, '-optimized.webp');
-  const pageLoaded = new Promise(r => {
-    if(document.readyState === 'complete') r(); else window.addEventListener('load', r, {once:true});
-  });
-  const MAX = 3;                       // parallel full-quality downloads
-  const hi = [], lo = []; let active = 0;
-  const pump = () => {
-    while(active < MAX && (hi.length || lo.length)){
-      const job = hi.length ? hi.shift() : lo.shift();
-      active++;
-      job().then(() => { active--; pump(); });
-    }
-  };
-  const enqueue = (job, el) => {
-    const r = el.getBoundingClientRect();
-    (r.top < window.innerHeight * 1.5 && r.bottom > -200 ? hi : lo).push(job);
-    pump();
-  };
-  const fetchFull = (url) => new Promise(res => {
-    const im = new Image();
-    im.decoding = 'async';
-    im.onload = () => (im.decode ? im.decode() : Promise.resolve()).catch(() => {}).then(() => res(true));
-    im.onerror = () => res(false);
-    im.src = url;
-  });
+  const pending = new Map();
+  const backgrounds = new WeakMap();
 
-  /* <img data-full="..."> whose src is already the light version */
+  function decode(src, priority){
+    const image = new Image();
+    image.fetchPriority = priority;
+    image.src = src;
+    return image.decode();
+  }
+
+  function loadFull(src){
+    if(!pending.has(src)){
+      const request = decode(src, 'low')
+        .then(() => true, () => false)
+        .finally(() => pending.delete(src));
+      pending.set(src, request);
+    }
+    return pending.get(src);
+  }
+
+  async function upgrade(full, preview, apply, isCurrent){
+    const ready = await preview.then(() => true, () => false);
+    if(ready){
+      await new Promise(resolve => {
+        requestAnimationFrame(() => requestAnimationFrame(resolve));
+      });
+    }
+    if(!isCurrent()) return;
+    if(await loadFull(full) && isCurrent()) apply(ready);
+  }
+
   function img(el){
     const full = el.dataset.full;
-    const fail = () => { el.src = full; };               // light version missing -> use full directly
-    const upgrade = () => pageLoaded.then(() => enqueue(() =>
-      fetchFull(full).then(ok => { if(ok) el.src = full; }), el));
-    if(el.complete){ el.naturalWidth ? upgrade() : fail(); }
-    else{
-      el.addEventListener('load', upgrade, {once:true});
-      el.addEventListener('error', fail, {once:true});
-    }
+    const preview = el.src;
+    upgrade(full, el.decode(), () => { el.src = full; },
+      () => el.isConnected && el.src === preview);
   }
 
-  /* any element that uses a CSS background-image */
-  function bg(el, full, now){
-    const light = low(full);
-    el.dataset.bgFor = full;
-    el.style.backgroundImage = `url('${light}')`;
-    const probe = new Image();                           // light version missing -> use full directly
-    probe.onerror = () => { if(el.dataset.bgFor === full) el.style.backgroundImage = `url('${full}')`; };
-    probe.src = light;
-    const run = () => fetchFull(full).then(ok => {
-      if(ok && el.dataset.bgFor === full) el.style.backgroundImage = `url('${full}')`;
+  function bg(el, full){
+    const preview = `url('${low(full)}')`;
+    const request = {};
+    backgrounds.set(el, request);
+    el.style.backgroundImage = preview;
+    upgrade(full, decode(low(full), 'auto'), (ready) => {
+      const image = `url('${full}')`;
+      el.style.backgroundImage = ready ? `${image}, ${preview}` : image;
+    }, () => backgrounds.get(el) === request);
+  }
+
+  const visible = new IntersectionObserver(entries => {
+    entries.forEach(({target, isIntersecting}) => {
+      if(!isIntersecting) return;
+      visible.unobserve(target);
+      if(target.tagName === 'IMG') img(target);
+      else bg(target, target.dataset.full);
     });
-    if(now) run(); else pageLoaded.then(() => enqueue(run, el));
-  }
+  });
 
-  return { low, img, bg };
+  return {
+    low, bg,
+    observe: el => visible.observe(el),
+    cancelBg: el => backgrounds.delete(el)
+  };
 })();
-document.querySelectorAll('img[data-full]').forEach(PL.img);
-document.querySelectorAll('[data-full]:not(img)').forEach(el => PL.bg(el, el.dataset.full));
+document.querySelectorAll('[data-full]').forEach(PL.observe);
 /* ================= LANGUAGE (FA default / EN) ================= */
 const I18N = {
  "fa": {
@@ -943,20 +988,83 @@ const I18N = {
   "stat2_lbl": "Top Manager of the Year",
   "phone": "+98&nbsp;21&nbsp;4499&nbsp;5659",
   "address": "Azin Electro Idea Knowledge-Based Company, Gate No. 2, Bronze Industrial Group, Street 56 (Nakhl Blvd.), Kerman Khodro Blvd., Km 16 Makhsous Road, Tehran, Iran"
+ },
+ "zh": {
+  "nav_cover": "封面",
+  "nav_intro": "公司简介",
+  "nav_cap": "核心能力",
+  "nav_prod": "产品",
+  "nav_gallery": "产品图库",
+  "nav_awards": "荣誉成就",
+  "nav_contact": "联系我们",
+  "cover_sub": "Azin Electro Idea 是一家知识型企业，也是伊朗汽车工业复杂电子零部件的主要供应商之一——从设计整车“大脑”到生产显示屏和组合仪表，一站式完成。",
+  "h_history": "公司历史",
+  "p_history": "Azin Electro Idea 知识型企业隶属于 Azin Khodro 工业集团，成立于 2019 年（伊朗历 1398 年），旨在开发汽车电子新技术，如今已成为伊朗汽车工业复杂电子零部件的主要供应商之一。",
+  "h_objectives": "目标",
+  "p_objectives": "提升员工的知识水平、意识与积极性；提高客户及利益相关方的满意度；按时交付；提高生产效率；拓展产品与服务种类；以及在项目中做好时间管控、前瞻规划与目标设定。",
+  "h_vision": "愿景",
+  "p_vision": "创造知识，贯彻相关标准，设计、生产并开发适用于汽车及非汽车领域的先进电子零部件与组件。",
+  "p_timeline": "该图表展示了公司从成立至今产品数量的增长及业务领域的拓展。产品组合的快速增长，源于对汽车电子技术研究、开发与改进的持续投入。",
+  "tv0": "12",
+  "ty0": "2025",
+  "tv1": "10",
+  "ty1": "2024",
+  "tv2": "6",
+  "ty2": "2023",
+  "tv3": "4",
+  "ty3": "2022",
+  "tv4": "2",
+  "ty4": "2021",
+  "tv5": "1",
+  "ty5": "2020",
+  "cap_title": "核心能力",
+  "alt_c1": "创新与技术积累",
+  "h_c1": "研发部门",
+  "p_c1a": "凭借全球领先的技术知识、专业团队和先进的基础设施，Azin Electro Idea 知识型企业能够以最高质量标准设计、开发和生产种类繁多的汽车电子产品。从研发到批量生产，再到售后支持，我们的每个环节都致力于为汽车及非汽车行业的客户提供创新、可靠且经济的解决方案。",
+  "p_c1b": "公司依托实力雄厚的研发团队，并借助科研与专业资源及新技术，努力满足当今汽车领域的需求，提供最高品质、契合市场需求的产品。",
+  "alt_c2": "生产线设备设计与制造",
+  "h_c2": "生产线设备设计与制造",
+  "p_c2": "Azin Electro Idea 凭借自身的技术知识和工程能力，从事生产线设备的设计与制造。公司提供贴合生产工艺的工程解决方案，为各行业的生产线设计、制造并实施所需设备。",
+  "alt_c3": "洁净室车间",
+  "h_c3": "洁净室（Cleanroom）车间",
+  "p_c3": "公司在洁净室车间配备先进设备，具备各类电子电路板的高水平组装能力。",
+  "alt_c4": "测试设备的设计与制造",
+  "h_c4": "测试设备的设计与制造",
+  "p_c4": "Azin Electro Idea 依托技术专长和经验丰富的工程团队，设计并制造各类生产线设备，包括工装夹具、工作台和输送线，既满足自身需求，也为其他公司提供定制化服务。",
+  "alt_c5": "汽车发动机测试",
+  "h_c5": "汽车发动机测试",
+  "p_c5": "Azin Electro Idea 配备先进的发动机试验室，可对各类内燃机进行测试。试验室配有测功机底盘，用于测量发动机功率和扭矩，并实时记录性能数据。",
+  "badge_products": "产品组合",
+  "h_products": "汽车<span class=\"accent\">电子零部件</span>",
+  "p_products": "Azin Electro Idea 知识型企业专注于新一代车辆电子零部件的设计与生产。点击任意卡片查看完整详情。",
+  "alt_awards": "荣誉与奖项",
+  "badge_awards": "荣誉成就",
+  "p_awards": "2025 年（伊朗历 1404 年）荣获“年度最佳经理人”奖，并连续四年在伊朗年度工矿贸易大会上荣获“优秀实业家”奖；同时连续四年获得伊朗工矿贸易“优秀青年生产者与经理人”国家评选活动颁发的奖项。",
+  "stat1_lbl": "连续获奖年数",
+  "stat2_num": "2025",
+  "stat2_lbl": "年度最佳经理人",
+  "phone": "+98&nbsp;21&nbsp;4499&nbsp;5659",
+  "address": "伊朗德黑兰，Makhsous 公路 16 公里处，Kerman Khodro 大道，56 号街（Nakhl 大道），Bronze 工业集团 2 号门，Azin Electro Idea 知识型企业"
  }
 };
 const UI = {
  "fa": {
   "close": "بستن",
   "hint": "مشاهده جزئیات &#8592;",
-  "title": "آذین الکترو ایده | کاتالوگ شرکت",
+  "title": "AEI Catalog",
   "lang_aria": "انتخاب زبان"
  },
  "en": {
   "close": "Close",
   "hint": "View details &#8594;",
-  "title": "Azin Electro Idea | Company Catalog",
+  "title": "AEI Catalog",
   "lang_aria": "Language"
+ },
+ "zh": {
+  "close": "关闭",
+  "hint": "查看详情 &#8594;",
+  "title": "AEI Catalog",
+  "lang_aria": "语言"
  }
 };
 const PRODUCTS = [
@@ -967,11 +1075,13 @@ const PRODUCTS = [
     "full": "(Engine Control Unit)",
     "name": {
       "fa": "مغز مدیریت پیشرانه خودرو",
-      "en": "Engine Management Brain"
+      "en": "Engine Management Brain",
+      "zh": "发动机管理“大脑”"
     },
     "desc": {
       "fa": "این شرکت با بهره‌گیری از دانش فنی روز و تجربه تخصصی در حوزه طراحی و تولید ECU، موفق به تولید ECUهای بهبود یافته نسل قدیم برای موتورها و پیشرانه‌های جدید از جمله M15 Plus، GSI، M15TC و N25 شده است. این محصولات با معماری پیشرفته و قابلیت پردازش هوشمند، عملکرد پایدار، دقت بالا و سازگاری کامل با نیاز خودروهای نسل جدید را فراهم می‌کنند.",
-      "en": "Drawing on up-to-date technical knowledge and specialized experience in ECU design and production, the company has successfully produced improved versions of previous-generation ECUs for new engines and powertrains, including the M15 Plus, GSI, M15TC and N25. With an advanced architecture and intelligent processing, these products deliver stable performance, high precision and full compatibility with the needs of new-generation vehicles."
+      "en": "Drawing on up-to-date technical knowledge and specialized experience in ECU design and production, the company has successfully produced improved versions of previous-generation ECUs for new engines and powertrains, including the M15 Plus, GSI, M15TC and N25. With an advanced architecture and intelligent processing, these products deliver stable performance, high precision and full compatibility with the needs of new-generation vehicles.",
+      "zh": "公司凭借业界领先的技术知识和在 ECU 设计与生产方面的专业经验，成功为 M15 Plus、GSI、M15TC 和 N25 等新型发动机及动力总成，研制出基于上一代产品改进升级的 ECU。这些产品采用先进架构和智能处理能力，性能稳定、精度高，并与新一代车辆的需求完全兼容。"
     }
   },
   {
@@ -981,11 +1091,13 @@ const PRODUCTS = [
     "full": "(Engine Control Unit) — Electronic Throttle",
     "name": {
       "fa": "مغز مدیریت پیشرانه خودرو با دریچه گاز برقی",
-      "en": "Engine Management Brain with Electronic Throttle"
+      "en": "Engine Management Brain with Electronic Throttle",
+      "zh": "带电子节气门的发动机管理“大脑”"
     },
     "desc": {
       "fa": "این مدل دارای دریچه گاز برقی بوده و با پردازش ۳۲ بیتی عمل می‌کند. متناظر با استانداردهای جهانی و متناسب با شرایط اقلیمی و الزامات کیفی داخلی کشور و مطابق با نیاز مشتری طراحی شده است. این محصول همچنین دارنده گواهی TA می‌باشد.",
-      "en": "This model features an electronic throttle and runs on 32-bit processing. It is designed in line with international standards, suited to local climate conditions and domestic quality requirements, and tailored to customer needs. The product also holds a TA certificate."
+      "en": "This model features an electronic throttle and runs on 32-bit processing. It is designed in line with international standards, suited to local climate conditions and domestic quality requirements, and tailored to customer needs. The product also holds a TA certificate.",
+      "zh": "该型号配备电子节气门，采用 32 位处理器。产品对标国际标准，适应国内气候条件和质量要求，并按客户需求设计。该产品还持有 TA 认证。"
     }
   },
   {
@@ -995,11 +1107,13 @@ const PRODUCTS = [
     "full": "(Integrated Body Control Module)",
     "name": {
       "fa": "ماژول کنترل بدنه یکپارچه",
-      "en": "Integrated Body Control Module"
+      "en": "Integrated Body Control Module",
+      "zh": "集成式车身控制模块"
     },
     "desc": {
       "fa": "ماژول IBCM با بهره‌گیری از فناوری هوشمند و ارتباط شبکه‌ای، باعث افزایش کارایی، کاهش سیم‌کشی، و بهبود هماهنگی بین واحدهای الکترونیکی خودرو می‌شود. این شرکت تنها تولیدکننده IBCM یکپارچه‌شده در کشور است و دارای فناوری‌های خاص و به‌روز صنعت جهانی خودرو می‌باشد.",
-      "en": "Using smart technology and network communication, the IBCM increases efficiency, reduces wiring and improves coordination between the vehicle's electronic units. The company is the only manufacturer of an integrated IBCM in the country and owns specific, up-to-date technologies of the global automotive industry."
+      "en": "Using smart technology and network communication, the IBCM increases efficiency, reduces wiring and improves coordination between the vehicle's electronic units. The company is the only manufacturer of an integrated IBCM in the country and owns specific, up-to-date technologies of the global automotive industry.",
+      "zh": "IBCM 借助智能技术和网络通信，提高效率、减少线束，并改善车辆各电子单元之间的协同。本公司是国内唯一生产集成式 IBCM 的制造商，掌握全球汽车行业特有且最新的技术。"
     }
   },
   {
@@ -1009,11 +1123,13 @@ const PRODUCTS = [
     "full": "(Body Control Module)",
     "name": {
       "fa": "ماژول کنترل بدنه",
-      "en": "Body Control Module"
+      "en": "Body Control Module",
+      "zh": "车身控制模块"
     },
     "desc": {
       "fa": "یکی از ماژول‌های کلیدی خودرو است که وظیفه کنترل و هماهنگی کلیه سیستم‌های الکتریکی داخل کابین و بدنه خودرو را برعهده دارد.",
-      "en": "One of the key modules in the vehicle, responsible for controlling and coordinating all electrical systems in the cabin and body."
+      "en": "One of the key modules in the vehicle, responsible for controlling and coordinating all electrical systems in the cabin and body.",
+      "zh": "这是车辆的关键模块之一，负责控制和协调车厢及车身内所有的电气系统。"
     }
   },
   {
@@ -1023,11 +1139,13 @@ const PRODUCTS = [
     "full": "Digital Instrument Cluster — Parse Nova",
     "name": {
       "fa": "جلوآمپر خودرو پارس نوا",
-      "en": "Parse Nova Instrument Cluster"
+      "en": "Parse Nova Instrument Cluster",
+      "zh": "Parse Nova 组合仪表"
     },
     "desc": {
       "fa": "کلاستر خودرو پارس نوا اولین جلوآمپر نیمه دیجیتال ساخت داخل و دارنده نمایشگر دیجیتال TFT ۳.۵ اینچ. با طراحی اختصاصی مطابق با استانداردهای ۸۵ گانه و الزامات داخل کشور می‌باشد که به سفارش مشتری توسعه یافته است.",
-      "en": "The Parse Nova cluster is the first domestically made semi-digital instrument cluster, featuring a 3.5-inch TFT digital display. It has a proprietary design in line with the 85-item standards and domestic requirements, and was developed to customer order."
+      "en": "The Parse Nova cluster is the first domestically made semi-digital instrument cluster, featuring a 3.5-inch TFT digital display. It has a proprietary design in line with the 85-item standards and domestic requirements, and was developed to customer order.",
+      "zh": "Parse Nova 组合仪表是首款国产半数字化仪表，配备 3.5 英寸 TFT 数字显示屏。其采用专属设计，符合 85 项标准及国内要求，并根据客户订单开发。"
     }
   },
   {
@@ -1037,11 +1155,13 @@ const PRODUCTS = [
     "full": "Digital Instrument Cluster — Atlas / Sahand",
     "name": {
       "fa": "جلوآمپر اطلس و سهند",
-      "en": "Atlas & Sahand Instrument Cluster"
+      "en": "Atlas & Sahand Instrument Cluster",
+      "zh": "Atlas 与 Sahand 组合仪表"
     },
     "desc": {
       "fa": "کلاستر یا جلوآمپر خودروها بخشی از داشبورد محسوب می‌شوند، که اطلاعاتی دقیق و کاربردی را به راننده ارائه می‌دهد. کلاستر اطلس و سهند با طراحی مدرن و دیجیتال طبق نیاز مشتری طراحی شده است.",
-      "en": "The cluster, or instrument panel, is part of the dashboard and gives the driver precise, practical information. The Atlas and Sahand clusters feature a modern, digital design developed to customer requirements."
+      "en": "The cluster, or instrument panel, is part of the dashboard and gives the driver precise, practical information. The Atlas and Sahand clusters feature a modern, digital design developed to customer requirements.",
+      "zh": "组合仪表是仪表板的一部分，向驾驶员提供精确而实用的信息。Atlas 和 Sahand 组合仪表采用现代数字化设计，并按客户要求开发。"
     }
   },
   {
@@ -1051,11 +1171,13 @@ const PRODUCTS = [
     "full": "(Tire Pressure Monitoring System)",
     "name": {
       "fa": "سیستم‌های نظارت بر فشار باد لاستیک",
-      "en": "Tire Pressure Monitoring System"
+      "en": "Tire Pressure Monitoring System",
+      "zh": "胎压监测系统"
     },
     "desc": {
       "fa": "این سیستم با ارائه هشدارهای لحظه‌ای از طریق نمایشگرهای تصویری یا چراغ‌های هشداردهنده، دما و فشار باد لاستیک را روی جلوآمپر یا سیستم مالتی‌مدیا نمایش می‌دهد.",
-      "en": "Through real-time alerts on visual displays or warning lamps, this system shows tire temperature and pressure on the instrument cluster or the multimedia system."
+      "en": "Through real-time alerts on visual displays or warning lamps, this system shows tire temperature and pressure on the instrument cluster or the multimedia system.",
+      "zh": "该系统通过显示屏或警示灯提供实时警报，并在组合仪表或多媒体系统上显示轮胎温度和气压。"
     }
   },
   {
@@ -1065,11 +1187,13 @@ const PRODUCTS = [
     "full": "(Heating, Ventilation, and Air Conditioning)",
     "name": {
       "fa": "پنل تهویه هوای خودرو",
-      "en": "Climate Control Panel"
+      "en": "Climate Control Panel",
+      "zh": "汽车空调控制面板"
     },
     "desc": {
       "fa": "این پنل با بهره‌گیری از فناوری‌های الکترونیکی و رابط کاربری ساده و کاربردی، امکان کنترل هوای داخل کابین را برای راننده و سرنشینان فراهم می‌سازد. این محصول بر اساس استانداردها و نیاز مشتری طراحی شده است.",
-      "en": "Using electronic technologies and a simple, practical user interface, this panel lets the driver and passengers control the cabin air. The product is designed to applicable standards and customer requirements."
+      "en": "Using electronic technologies and a simple, practical user interface, this panel lets the driver and passengers control the cabin air. The product is designed to applicable standards and customer requirements.",
+      "zh": "该面板运用电子技术和简洁实用的用户界面，使驾驶员和乘客能够控制车厢内的空气环境。产品按照相关标准和客户要求设计。"
     }
   },
   {
@@ -1079,11 +1203,13 @@ const PRODUCTS = [
     "full": "In-Vehicle Infotainment Unit",
     "name": {
       "fa": "مالتی مدیا",
-      "en": "Multimedia"
+      "en": "Multimedia",
+      "zh": "多媒体"
     },
     "desc": {
       "fa": "این سیستم با مانیتور ۷ اینچی لمسی، مطابق با خواسته مشتری و با توجه به شرایط خاص و الزامات جانمایی و قرارگیری بر روی داشبورد خودرو طراحی و به‌طور کامل داخلی‌سازی شده است.",
-      "en": "This system features a 7-inch touchscreen and has been fully localized, designed to customer specifications and to the particular requirements for placement on the vehicle dashboard."
+      "en": "This system features a 7-inch touchscreen and has been fully localized, designed to customer specifications and to the particular requirements for placement on the vehicle dashboard.",
+      "zh": "该系统配备 7 英寸触摸屏，根据客户要求，并结合仪表板安装位置的特殊条件和布置要求设计，已实现全面国产化。"
     }
   }
 ];
@@ -1091,14 +1217,15 @@ const PRODUCTS = [
 let currentLang = 'fa';
 let currentProduct = null;
 const overlay = document.getElementById('modalOverlay');
+const modalImg = document.getElementById('modalImg');
 
 const gallery = document.getElementById('gallery');
-PRODUCTS.forEach((p, i) => {
+PRODUCTS.forEach(p => {
   const card = document.createElement('div');
   card.className = 'pcard tilt reveal';
   card.innerHTML = `
     <div class="pcard-photo scan-wrap">
-      <img src="${PL.low(p.img)}" data-full="${p.img}" alt="" loading="lazy">
+      <img src="${PL.low(p.img)}" data-full="${p.img}" alt="" loading="lazy" decoding="async">
       <div class="scan-line"></div>
       <span class="pcard-code en">${p.code}</span>
     </div>
@@ -1110,9 +1237,9 @@ PRODUCTS.forEach((p, i) => {
       <div class="pcard-expand-hint"></div>
     </div>
   `;
-  PL.img(card.querySelector('.pcard-photo img'));
   card.addEventListener('click', () => openModal(p));
   gallery.appendChild(card);
+  PL.observe(card.querySelector('.pcard-photo img'));
   p._card = card;
 });
 
@@ -1124,16 +1251,14 @@ function fillModal(p){
 }
 function openModal(p){
   currentProduct = p;
-  const mi = document.getElementById('modalImg');
-  PL.bg(mi, p.img, true);
-  mi.style.backgroundSize = 'cover';
-  mi.style.backgroundPosition = 'center';
   fillModal(p);
   overlay.classList.add('open');
+  PL.bg(modalImg, p.img);
   document.body.style.overflow = 'hidden';
 }
 function closeModal(){
   overlay.classList.remove('open');
+  PL.cancelBg(modalImg);
   document.body.style.overflow = '';
   currentProduct = null;
 }
@@ -1141,39 +1266,55 @@ document.getElementById('modalClose').addEventListener('click', closeModal);
 overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
 document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
 
+const LANGS = { fa:{tag:'fa', dir:'rtl', label:'\u0641\u0627\u0631\u0633\u06cc'}, en:{tag:'en', dir:'ltr', label:'EN'}, zh:{tag:'zh-CN', dir:'ltr', label:'\u4e2d\u6587'} };
 function applyLang(lang){
-  if(lang !== 'fa' && lang !== 'en') lang = 'fa';
+  if(!LANGS[lang]) lang = 'fa';
   currentLang = lang;
   const d = I18N[lang], u = UI[lang];
   const root = document.documentElement;
-  root.lang = lang;
-  root.dir = (lang === 'fa') ? 'rtl' : 'ltr';
+  root.lang = LANGS[lang].tag;
+  root.dir = LANGS[lang].dir;
   document.title = u.title;
   document.querySelectorAll('[data-i18n]').forEach(el => { el.innerHTML = d[el.dataset.i18n]; });
   document.querySelectorAll('[data-i18n-alt]').forEach(el => { el.alt = d[el.dataset.i18nAlt]; });
   document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', d[el.dataset.i18nAria]); });
   const sw = document.getElementById('langSwitch');
   sw.setAttribute('aria-label', u.lang_aria);
-  sw.querySelectorAll('button').forEach(b => {
+  sw.querySelectorAll('#langOptions button').forEach(b => {
     const on = b.dataset.lang === lang;
     b.classList.toggle('active', on);
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
   });
+  const tg = document.getElementById('langToggle');
+  tg.dataset.lang = lang; tg.lang = LANGS[lang].tag;
+  tg.setAttribute('aria-label', u.lang_aria);
+  document.getElementById('langCurrent').textContent = LANGS[lang].label;
   document.getElementById('modalClose').setAttribute('aria-label', u.close);
   PRODUCTS.forEach(p => {
     const c = p._card;
     c.querySelector('img').alt = p.name[lang];
     c.querySelector('.fa-name').textContent = p.name[lang];
     const dsc = p.desc[lang];
-    c.querySelector('p').textContent = dsc.length > 120 ? dsc.slice(0,120) + '\u2026' : dsc;
+    const lim = (lang === 'zh') ? 56 : 120;
+    c.querySelector('p').textContent = dsc.length > lim ? dsc.slice(0,lim) + '\u2026' : dsc;
     c.querySelector('.pcard-expand-hint').innerHTML = u.hint;
   });
   if(currentProduct) fillModal(currentProduct);
   try{ localStorage.setItem('aei-lang', lang); }catch(e){}
 }
-document.querySelectorAll('#langSwitch button').forEach(b => {
-  b.addEventListener('click', () => applyLang(b.dataset.lang));
+const langSwitch = document.getElementById('langSwitch');
+const langToggle = document.getElementById('langToggle');
+function setLangMenu(open){
+  langSwitch.classList.toggle('open', open);
+  langToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+document.querySelectorAll('#langOptions button').forEach(b => {
+  b.addEventListener('click', () => { applyLang(b.dataset.lang); setLangMenu(false); });
 });
+langToggle.addEventListener('click', () => setLangMenu(!langSwitch.classList.contains('open')));
+document.addEventListener('click', (e) => { if(!langSwitch.contains(e.target)) setLangMenu(false); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape') setLangMenu(false); });
+window.addEventListener('scroll', () => setLangMenu(false), {passive:true});
 (function initLang(){
   let l = 'fa';
   try{
@@ -1286,24 +1427,54 @@ const tio = new IntersectionObserver((entries) => {
 if(timeline) tio.observe(timeline);
 
 /* Nav dots active state + scroll */
-const navButtons = document.querySelectorAll('.navdots button');
-const sectionIds = ['cover','intro','cap1','products-intro','products','awards','contact'];
-navButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth'});
+const navItems = Array.from(document.querySelectorAll('.navdots button'), button => ({
+  button,
+  section: document.getElementById(button.dataset.target)
+})).filter(({section}) => section);
+
+navItems.forEach(({button, section}) => {
+  button.addEventListener('click', () => {
+    const viewportMidpoint = document.documentElement.clientHeight / 2;
+    const isShortSection = section.getBoundingClientRect().height <= viewportMidpoint;
+    section.scrollIntoView({
+      behavior: prefersReduced ? 'instant' : 'smooth',
+      block: isShortSection ? 'center' : 'start'
+    });
   });
 });
-const secEls = sectionIds.map(id => document.getElementById(id));
-const navio = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      const idx = sectionIds.indexOf(entry.target.id);
-      navButtons.forEach(b => b.classList.remove('active'));
-      if(navButtons[idx]) navButtons[idx].classList.add('active');
+
+function syncNavDots(){
+  const viewportMidpoint = document.documentElement.clientHeight / 2;
+  const activeItem = navItems.find(({section}) => {
+    const {top, bottom} = section.getBoundingClientRect();
+    return top <= viewportMidpoint && bottom > viewportMidpoint;
+  });
+
+  navItems.forEach(item => {
+    const isActive = item === activeItem;
+    item.button.classList.toggle('active', isActive);
+    if(isActive){
+      item.button.setAttribute('aria-current', 'true');
+    }else{
+      item.button.removeAttribute('aria-current');
     }
   });
-}, { threshold: 0.5 });
-secEls.forEach(el => { if(el) navio.observe(el); });
+}
+
+let navFrame = 0;
+function scheduleNavSync(){
+  if(navFrame) return;
+  navFrame = requestAnimationFrame(() => {
+    navFrame = 0;
+    syncNavDots();
+  });
+}
+
+window.addEventListener('scroll', scheduleNavSync, {passive:true});
+window.addEventListener('resize', scheduleNavSync);
+const navResizeObserver = new ResizeObserver(scheduleNavSync);
+navItems.forEach(({section}) => navResizeObserver.observe(section));
+syncNavDots();
 
 </script>
 </body>
