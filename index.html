@@ -808,8 +808,12 @@ html[lang^="zh"] .cover-sub{ line-height:1.9; }
    Show the WebP first. Upgrade visible images once the preview has painted. */
 const PL = (() => {
   const low = (src) => src.replace(/\.png$/i, '-optimized.webp');
-  const pending = new Map();
+  const loaded = new Set();          // originals already downloaded + decoded
+  const pending = new Map();         // original -> in-flight promise
   const backgrounds = new WeakMap();
+  const queue = [];                  // originals waiting for their turn
+  const MAX_FULL = 1;                // never more than ONE heavy original at a time
+  let previewsBusy = 0, fullBusy = 0;
 
   function decode(src, priority){
     const image = new Image();
@@ -818,31 +822,71 @@ const PL = (() => {
     return image.decode();
   }
 
-  function loadFull(src){
+  /* Previews (optimized WebP) always go first: while any of them is still
+     downloading, no original is started. 6s safety timeout avoids a deadlock. */
+  function trackPreview(promise){
+    previewsBusy++;
+    let released = false;
+    const release = () => { if(released) return; released = true; previewsBusy--; pump(); };
+    promise.then(release, release);
+    setTimeout(release, 6000);
+    return promise;
+  }
+
+  function load(src){
+    if(loaded.has(src)) return Promise.resolve(true);
     if(!pending.has(src)){
-      const request = decode(src, 'low')
-        .then(() => true, () => false)
-        .finally(() => pending.delete(src));
-      pending.set(src, request);
+      pending.set(src, decode(src, 'low')
+        .then(() => { loaded.add(src); return true; }, () => false)
+        .finally(() => pending.delete(src)));
     }
     return pending.get(src);
   }
 
-  async function upgrade(full, preview, apply, isCurrent){
-    const ready = await preview.then(() => true, () => false);
-    if(ready){
-      await new Promise(resolve => {
-        requestAnimationFrame(() => requestAnimationFrame(resolve));
-      });
+  function distance(el){
+    const r = el.getBoundingClientRect(), vh = window.innerHeight;
+    if(r.bottom < 0) return -r.bottom;
+    if(r.top > vh) return r.top - vh;
+    return 0;
+  }
+
+  /* Originals: one at a time, only when no preview is loading,
+     and always the one closest to what the user is looking at. */
+  function pump(){
+    if(previewsBusy > 0) return;
+    while(fullBusy < MAX_FULL){
+      for(let i = queue.length - 1; i >= 0; i--) if(!queue[i].isCurrent()) queue.splice(i, 1);
+      if(!queue.length) break;
+      queue.sort((a, b) => distance(a.el) - distance(b.el));
+      const job = queue.shift();
+      fullBusy++;
+      load(job.full)
+        .then(ok => { if(ok && job.isCurrent()) job.apply(job.ready); })
+        .finally(() => { fullBusy--; pump(); });
     }
+  }
+
+  function nextPaint(){
+    return new Promise(resolve => {
+      let done = false;
+      const go = () => { if(!done){ done = true; resolve(); } };
+      requestAnimationFrame(() => requestAnimationFrame(go));
+      setTimeout(go, 150);           // rAF is paused in background tabs
+    });
+  }
+
+  async function upgrade(el, full, preview, apply, isCurrent){
+    const ready = await preview.then(() => true, () => false);
+    if(ready) await nextPaint();
     if(!isCurrent()) return;
-    if(await loadFull(full) && isCurrent()) apply(ready);
+    queue.push({el, full, apply, ready, isCurrent});
+    pump();
   }
 
   function img(el){
     const full = el.dataset.full;
     const preview = el.src;
-    upgrade(full, el.decode(), () => { el.src = full; },
+    upgrade(el, full, trackPreview(el.decode()), () => { el.src = full; },
       () => el.isConnected && el.src === preview);
   }
 
@@ -851,7 +895,7 @@ const PL = (() => {
     const request = {};
     backgrounds.set(el, request);
     el.style.backgroundImage = preview;
-    upgrade(full, decode(low(full), 'auto'), (ready) => {
+    upgrade(el, full, trackPreview(decode(low(full), 'auto')), (ready) => {
       const image = `url('${full}')`;
       el.style.backgroundImage = ready ? `${image}, ${preview}` : image;
     }, () => backgrounds.get(el) === request);
@@ -864,7 +908,7 @@ const PL = (() => {
       if(target.tagName === 'IMG') img(target);
       else bg(target, target.dataset.full);
     });
-  });
+  }, { rootMargin: '200px 0px' });
 
   return {
     low, bg,
